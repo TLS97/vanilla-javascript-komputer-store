@@ -10,18 +10,20 @@ The application is a store for purchasing used computers. It consists of four se
 
 - [Node JS](https://nodejs.org/en/)
 
-## Usage
+## Install
 
-First, install the dependencies:
+To run the project, first install the dependencies using the following command:
 
 ```
 npm install
 ```
 
-Then, run the application using the following command:
+## Usage
+
+Start the Node server by using the following command:
 
 ```
-npm start
+node server.js
 ```
 
 ## Contributors
