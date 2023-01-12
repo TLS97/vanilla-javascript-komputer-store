@@ -31,10 +31,14 @@
               <div class="row">
                 <h3>Joe Banker</h3>
                 <div class="col"><p>Balance</p></div>
-                <div class="col text-end">200</div>
+                <div class="col text-end" id="bank-balance">200</div>
               </div>
               <div class="row pt-4">
-                <button type="button" class="btn btn-success">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  id="get-a-loan-btn"
+                >
                   Get a Loan
                 </button>
               </div>
@@ -51,18 +55,22 @@
                   <p>Pay</p>
                 </div>
                 <div class="col d-flex justify-content-end">
-                  <span>200</span>
+                  <span id="pay">200</span>
                 </div>
               </div>
               <div class="row pt-4 text-center d-flex">
                 <div class="col mx-1">
                   <div class="row">
-                    <button type="button" class="btn btn-warning">Bank</button>
+                    <button type="button" class="btn btn-warning" id="bank-btn">
+                      Bank
+                    </button>
                   </div>
                 </div>
                 <div class="col mx-1">
                   <div class="row">
-                    <button type="button" class="btn btn-info">Work</button>
+                    <button type="button" class="btn btn-info" id="work-btn">
+                      Work
+                    </button>
                   </div>
                 </div>
               </div>
@@ -78,16 +86,12 @@
                 <select
                   class="form-select mt-2 mx-2"
                   aria-label="Default select example"
-                >
-                  <option selected>Laptop 1</option>
-                  <option value="1">Laptop 2</option>
-                  <option value="2">Laptop 3</option>
-                  <option value="3">Laptop 4</option>
-                </select>
+                  id="computer-selection"
+                ></select>
               </div>
               <div class="row pt-3">
                 <h5>Features:</h5>
-                <p>
+                <p id="computer-features">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
                   cumque perspiciatis deleniti accusantium alias aut facilis
                   cum.
@@ -104,8 +108,8 @@
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <div class="row">
-                <div class="col-4">
+              <div class="row" id="computer-purchase">
+                <div class="col-4" id="computer-image-div">
                   <img
                     src="https://img.freepik.com/free-psd/digital-device-mockup_53876-91374.jpg"
                     alt=""
@@ -113,8 +117,8 @@
                   />
                 </div>
                 <div class="col-6">
-                  <h1>Laptop Model</h1>
-                  <p>
+                  <h1 id="computer-model">Laptop Model</h1>
+                  <p id="computer-desc">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Molestias consequuntur non magni velit tempora aliquid odio
                     debitis natus saepe iure laudantium ducimus quas deleniti a
@@ -122,7 +126,11 @@
                   </p>
                 </div>
                 <div class="col-2 d-flex align-items-end justify-content-end">
-                  <button type="button" class="btn btn-info m-3">
+                  <button
+                    type="button"
+                    class="btn btn-info m-3"
+                    id="buy-now-btn"
+                  >
                     Buy Now
                   </button>
                 </div>
@@ -143,5 +151,6 @@
       integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
       crossorigin="anonymous"
     ></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>
