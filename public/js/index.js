@@ -31,3 +31,13 @@ const addComputerToList = (computer) => {
   computerEl.appendChild(document.createTextNode(computer.title));
   computerSelectionEl.appendChild(computerEl);
 };
+
+const handleComputerSelectionChange = (e) => {
+  const selectedComputer = computers[e.target.selectedIndex];
+  // console.log(selectedComputer);
+  computerFeaturesEl.innerText = selectedComputer.description;
+  // renderComputerDisplayInfo(selectedComputer);
+};
+
+// Event Listeners
+computerSelectionEl.addEventListener("change", handleComputerSelectionChange);
