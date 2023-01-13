@@ -15,6 +15,7 @@ const loanDivEl = document.getElementById("loan-div");
 // Variables
 let bankBalance = 200;
 let loan = 0;
+let pay = 0;
 let computers = [];
 
 // Fetching computer data
@@ -79,8 +80,18 @@ const getLoan = (desiredLoan) => {
   }
 };
 
+const renderWorkSection = (pay) => {
+  payEl.innerText = "";
+  payEl.innerText = pay;
+};
+
+const handleWorkButtonClick = (e) => {
+  pay += 100;
+  renderWorkSection(pay);
+};
 // Event Listeners
 computerSelectionEl.addEventListener("change", handleComputerSelectionChange);
 getLoanBtnEl.addEventListener("click", handleLoanButtonClick);
+workBtnEl.addEventListener("click", handleWorkButtonClick);
 
 renderBankSection(bankBalance, loan);
