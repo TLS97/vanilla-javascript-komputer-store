@@ -13,7 +13,7 @@ const buyNowBtnEl = document.getElementById("buy-now-btn");
 const loanDivEl = document.getElementById("loan-div");
 
 // Variables
-let bankBalance = 200;
+let bankBalance = 0;
 let loan = 0;
 let pay = 0;
 let computers = [];
@@ -46,7 +46,7 @@ const renderBankSection = (bankBalance, loan) => {
   loanDivEl.innerHTML = "";
   bankBalanceEl.innerText = "";
 
-  console.log(`balance: ${bankBalance}\nloan: ${loan}`);
+  //console.log(`balance: ${bankBalance}\nloan: ${loan}`);
   bankBalanceEl.innerText = bankBalance;
 
   if (loan > 0) {
@@ -61,16 +61,17 @@ const renderBankSection = (bankBalance, loan) => {
 };
 
 const handleLoanButtonClick = (e) => {
-  let desiredLoanValue = parseInt(prompt("Enter the desired loan amount"));
-  loan === 0 ? getLoan(desiredLoanValue) : alert("You already have a loan!");
+  loan === 0 ? getLoan(bankBalance) : alert("You already have a loan!");
 };
 
-const getLoan = (desiredLoan) => {
+const getLoan = (bankBalance) => {
+  //console.log(`from loan button: ${bankBalance}`);
+  let desiredLoan = parseInt(prompt("Enter the desired loan amount"));
   let maxLoanValue = bankBalance * 2;
 
   if (desiredLoan <= maxLoanValue) {
     loan = desiredLoan;
-    bankBalance += loan;
+    //bankBalance += loan;
 
     renderBankSection(bankBalance, loan);
   } else {
@@ -89,9 +90,39 @@ const handleWorkButtonClick = (e) => {
   pay += 100;
   renderWorkSection(pay);
 };
+
+const handleBankButtonClick = (e) => {
+  if (loan > 0) {
+    let downpayment = pay * 0.1;
+    confirm(
+      "10% of your pay will automatically go to downpaying your loan.\nAre you sure you want to transfer the money?"
+    )
+      ? transferMoneyToBank(downpayment)
+      : false;
+  } else {
+    transferMoneyToBank(0);
+  }
+};
+
+const transferMoneyToBank = (downpayment) => {
+  if (downpayment <= loan) {
+    loan -= downpayment;
+    bankBalance += pay - downpayment;
+  } else {
+    pay -= loan;
+    bankBalance += pay;
+  }
+  pay = 0;
+  //console.log(`from transfer function: ${bankBalance}`);
+  renderBankSection(bankBalance, loan);
+  renderWorkSection(pay);
+};
+
 // Event Listeners
 computerSelectionEl.addEventListener("change", handleComputerSelectionChange);
 getLoanBtnEl.addEventListener("click", handleLoanButtonClick);
 workBtnEl.addEventListener("click", handleWorkButtonClick);
+bankBtnEl.addEventListener("click", handleBankButtonClick);
 
 renderBankSection(bankBalance, loan);
+renderWorkSection(pay);
