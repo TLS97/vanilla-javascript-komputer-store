@@ -10,6 +10,7 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- Navbar -->
@@ -20,127 +21,99 @@
         </div>
       </nav>
     </div>
-    <!-- Start of container -->
     <div class="container-fluid p-3">
-      <!-- Start of first row -->
-      <div class="row pt-3">
-        <!-- Start of first column -->
+      <div class="row p-3 m-3">
         <div class="col">
-          <div class="card px-3 h-500">
-            <div class="card-body">
-              <div class="row">
-                <h3>Joe Banker</h3>
-                <div class="col"><p>Balance</p></div>
-                <div class="col text-end" id="bank-balance">200</div>
-              </div>
-              <div class="row pt-4">
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  id="get-a-loan-btn"
-                >
-                  Get a Loan
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Start of second column -->
-        <div class="col">
-          <div class="card px-3">
-            <div class="card-body">
-              <div class="row">
-                <h3>Work</h3>
-                <div class="col">
-                  <p>Pay</p>
-                </div>
-                <div class="col d-flex justify-content-end">
-                  <span id="pay">200</span>
-                </div>
-              </div>
-              <div class="row pt-4 text-center d-flex">
-                <div class="col mx-1">
-                  <div class="row">
-                    <button type="button" class="btn btn-warning" id="bank-btn">
-                      Bank
-                    </button>
-                  </div>
-                </div>
-                <div class="col mx-1">
-                  <div class="row">
-                    <button type="button" class="btn btn-info" id="work-btn">
-                      Work
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Start of third column -->
-        <div class="col">
-          <div class="card px-3">
-            <div class="card-body">
-              <div class="row">
-                <h3>Laptops</h3>
-                <select
-                  class="form-select mt-2 mx-2"
-                  aria-label="Default select example"
-                  id="computer-selection"
-                ></select>
-              </div>
+          <div class="card h-100">
+            <div class="card-body p-4">
+              <h3>Joe Banker</h3>
               <div class="row pt-3">
-                <h5>Features:</h5>
-                <p id="computer-features">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
-                  cumque perspiciatis deleniti accusantium alias aut facilis
-                  cum.
-                </p>
+                <div class="col"><p>Balance</p></div>
+                <div class="col d-flex justify-content-end">
+                  <span class="text-end" id="bank-balance"></span>
+                </div>
               </div>
+              <div class="row" id="loan-div">
+                <div class="col"><p>Outstanding Loan</p></div>
+                <div class="col d-flex justify-content-end">
+                  <span class="text-end"></span>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer mx-auto">
+              <button type="button" class="btn btn-success" id="get-a-loan-btn">
+                Get a Loan
+              </button>
             </div>
           </div>
         </div>
-      </div>
-      <!-- End of first row -->
-
-      <!-- Start of second row -->
-      <div class="row py-5">
         <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <div class="row" id="computer-purchase">
-                <div class="col-4" id="computer-image-div">
-                  <img
-                    src="https://img.freepik.com/free-psd/digital-device-mockup_53876-91374.jpg"
-                    alt=""
-                    height="150"
-                  />
+          <div class="card h-100">
+            <div class="card-body p-4">
+              <h3>Work</h3>
+              <div class="row pt-3">
+                <div class="col"><p>Pay</p></div>
+                <div class="col d-flex justify-content-end">
+                  <span class="text-end" id="pay">500</span>
                 </div>
-                <div class="col-6">
-                  <h1 id="computer-model">Laptop Model</h1>
-                  <p id="computer-desc">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Molestias consequuntur non magni velit tempora aliquid odio
-                    debitis natus saepe iure laudantium ducimus quas deleniti a
-                    ex dolor.
-                  </p>
+              </div>
+            </div>
+            <div class="card-footer mx-auto">
+              <div class="row">
+                <div class="col mx-1">
+                  <button type="button" class="btn btn-warning" id="bank-btn">
+                    Bank
+                  </button>
                 </div>
-                <div class="col-2 d-flex align-items-end justify-content-end">
-                  <button
-                    type="button"
-                    class="btn btn-info m-3"
-                    id="buy-now-btn"
-                  >
-                    Buy Now
+                <div class="col">
+                  <button type="button" class="btn btn-info" id="work-btn">
+                    Work
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body p-4">
+              <div class="row">
+                <h3>Laptops</h3>
+              </div>
+              <div class="row">
+                <select class="form-select" id="computer-selection">
+                  <option value="" selected>Choose a Laptop</option>
+                </select>
+              </div>
+              <div class="row pt-3">
+                <strong>Features</strong>
+                <p id="computer-features"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row p-3 m-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-4" id="computer-image-div">
+                <img src="" alt="" />
+              </div>
+              <div class="col-6">
+                <h1 id="computer-model"></h1>
+                <p id="computer-desc"></p>
+              </div>
+              <div
+                class="col-2 d-flex align-items-center justify-content-center"
+              >
+                <button type="button" class="btn btn-info m-3">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- End of container -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
       integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
