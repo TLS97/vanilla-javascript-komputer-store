@@ -11,13 +11,15 @@ const computerModelEl = document.getElementById("computer-model");
 const computerDescEl = document.getElementById("computer-desc");
 const buyNowBtnEl = document.getElementById("buy-now-btn");
 const loanDivEl = document.getElementById("loan-div");
-const repayLoanBtnEl = document.getElementById("repay-loan-btn");
+const downpayLoanBtnEl = document.getElementById("downpay-loan-btn");
 const priceTagEl = document.getElementById("price");
+
 // Variables
 let bankBalance = 0;
 let loan = 0;
 let pay = 0;
 let computers = [];
+let currentlySelectedComputer;
 
 // Fetching computer data
 fetch("https://hickory-quilled-actress.glitch.me/computers")
@@ -28,6 +30,11 @@ fetch("https://hickory-quilled-actress.glitch.me/computers")
 // Functions
 const addComputersToList = (computers) => {
   computers.forEach((c) => addComputerToList(c));
+
+  currentlySelectedComputer = computers[0];
+
+  renderComputerDisplayInfo(currentlySelectedComputer);
+  renderComputerSelectionSection();
 };
 
 const addComputerToList = (computer) => {
@@ -39,9 +46,8 @@ const addComputerToList = (computer) => {
 
 const renderBankSection = (bankBalance, loan) => {
   loanDivEl.innerHTML = "";
-  bankBalanceEl.innerText = "";
 
-  //console.log(`balance: ${bankBalance}\nloan: ${loan}`);
+  bankBalanceEl.innerText = "";
   bankBalanceEl.innerText = bankBalance;
 
   if (loan > 0) {
@@ -55,92 +61,11 @@ const renderBankSection = (bankBalance, loan) => {
   }
 };
 
-const handleLoanButtonClick = (e) => {
-  loan === 0 ? getLoan() : alert("You already have a loan!");
-};
-
-const getLoan = () => {
-  //console.log(`from loan button: ${bankBalance}`);
-  let desiredLoan = parseInt(prompt("Enter the desired loan amount"));
-  let maxLoanValue = bankBalance * 2;
-
-  if (desiredLoan <= maxLoanValue) {
-    loan = desiredLoan;
-    //bankBalance += loan;
-
-    renderBankSection(bankBalance, loan);
-  } else {
-    alert(
-      `You cannot get a loan greater than double you bank balance.\nYou have a bank balance of ${bankBalance}.\nMaximum loan amount is ${maxLoanValue}`
-    );
-  }
-};
-
 const renderWorkSection = (pay) => {
   payEl.innerText = "";
   payEl.innerText = pay;
 };
 
-const handleWorkButtonClick = (e) => {
-  pay += 100;
-  renderWorkSection(pay);
-};
-
-const handleBankButtonClick = (e) => {
-  if (loan > 0) {
-    let downpayment = pay * 0.1;
-    confirm(
-      "10% of your pay will automatically go to downpaying your loan.\nAre you sure you want to transfer the money?"
-    )
-      ? transferMoneyToBank(downpayment)
-      : false;
-  } else {
-    transferMoneyToBank(0);
-  }
-};
-
-const transferMoneyToBank = (downpayment) => {
-  if (downpayment <= loan) {
-    loan -= downpayment;
-    bankBalance += pay - downpayment;
-  } else {
-    pay -= loan;
-    bankBalance += pay;
-  }
-  pay = 0;
-  //console.log(`from transfer function: ${bankBalance}`);
-  renderBankSection(bankBalance, loan);
-  renderWorkSection(pay);
-};
-
-const handleRepayLoanButtonClick = (e) => {
-  if (pay >= loan) {
-    repayLoan();
-  } else {
-    alert(
-      "You don't have sufficient pay to downpay your loan.\nYou need to work more!"
-    );
-  }
-};
-
-const repayLoan = () => {
-  pay -= loan;
-  loan = 0;
-  renderWorkSection(pay);
-  renderBankSection(bankBalance);
-};
-
-const handleComputerSelectionChange = (e) => {
-  const selectedComputer = computers[e.target.selectedIndex];
-
-  computerFeaturesEl.innerHTML = "";
-  let computerFeaturesHtml = `<strong>Features</strong>
-                              <p id="computer-features">${selectedComputer.description}</p>`;
-
-  computerFeaturesEl.insertAdjacentHTML("beforeend", computerFeaturesHtml);
-  renderComputerDisplayInfo(selectedComputer);
-};
-// https://hickory-quilled-actress.glitch.me/assets/images/${i}.png
 const renderComputerDisplayInfo = (computer) => {
   computerImageDivEl.innerHTML = "";
   computerImageDivEl.innerHTML = `<img src="https://hickory-quilled-actress.glitch.me/${computer.image}" style="height: 200px" />`;
@@ -156,12 +81,130 @@ const renderComputerDisplayInfo = (computer) => {
   priceTagEl.innerText = computer.price + " NOK";
 };
 
-// Event Listeners
-computerSelectionEl.addEventListener("change", handleComputerSelectionChange);
-getLoanBtnEl.addEventListener("click", handleLoanButtonClick);
-workBtnEl.addEventListener("click", handleWorkButtonClick);
-bankBtnEl.addEventListener("click", handleBankButtonClick);
-repayLoanBtnEl.addEventListener("click", handleRepayLoanButtonClick);
+const renderComputerSelectionSection = () => {
+  computerSelectionEl.innerHTML = "";
+  computers.forEach((c) => addComputerToList(c));
+  computerFeaturesEl.innerHTML = "";
+  let computerFeaturesHtml = `<strong>Features</strong>
+                              <p id="computer-features">${currentlySelectedComputer.description}</p>`;
+  computerFeaturesEl.insertAdjacentHTML("beforeend", computerFeaturesHtml);
+};
 
+const takeOutLoan = (e) => {
+  if (loan === 0) {
+    let desiredLoan = parseInt(prompt("Enter the desired loan amount"));
+    let maxLoanValue = bankBalance * 2;
+
+    if (desiredLoan <= maxLoanValue) {
+      loan = desiredLoan;
+      bankBalance += loan;
+      renderBankSection(bankBalance, loan);
+    } else {
+      alert(
+        `You cannot get a loan greater than double you bank balance.\nYou have a bank balance of ${bankBalance}.\nMaximum loan amount is ${maxLoanValue}`
+      );
+    }
+  } else {
+    alert("You already have a loan!");
+  }
+};
+
+const increasePay = (e) => {
+  pay += 100;
+  renderWorkSection(pay);
+};
+
+const transferMoneyToBank = (e) => {
+  if (pay > 0) {
+    if (loan > 0) {
+      isConfirmed = confirm(
+        "10% of your pay automatically goes to downpaying your loan. Would you like to proceed?"
+      );
+
+      if (isConfirmed) {
+        const loanDownpayMinPercent = 0.1;
+        let downpaymentValue = pay * loanDownpayMinPercent;
+        let payToTransfer = pay - downpaymentValue;
+
+        loan -= downpaymentValue;
+        bankBalance += payToTransfer;
+        pay = 0;
+
+        renderBankSection(bankBalance, loan);
+        renderWorkSection(pay);
+      }
+    } else {
+      bankBalance += pay;
+      pay = 0;
+
+      renderBankSection(bankBalance, loan);
+      renderWorkSection(pay);
+    }
+  } else {
+    alert(
+      "You have to earn some money before you can transfer it to the bank!"
+    );
+  }
+};
+
+const downpayLoan = (e) => {
+  if (pay >= loan) {
+    pay -= loan;
+    loan = 0;
+    renderWorkSection(pay);
+    renderBankSection(bankBalance);
+  } else {
+    alert(
+      "You don't have sufficient pay to downpay your loan.\nYou need to work more!"
+    );
+  }
+};
+
+const handleComputerSelectionChange = (e) => {
+  currentlySelectedComputer = computers[e.target.selectedIndex];
+
+  computerFeaturesEl.innerHTML = "";
+  let computerFeaturesHtml = `<strong>Features</strong>
+                              <p id="computer-features">${currentlySelectedComputer.description}</p>`;
+
+  computerFeaturesEl.insertAdjacentHTML("beforeend", computerFeaturesHtml);
+  renderComputerDisplayInfo(currentlySelectedComputer);
+};
+
+const purchaseComputer = (e) => {
+  if (bankBalance >= currentlySelectedComputer.price) {
+    alert(
+      `Congratulation!\nYou've purchased the ${currentlySelectedComputer.title}.`
+    );
+
+    bankBalance -= currentlySelectedComputer.price;
+    const idxOfComputer = computers.findIndex(
+      (computer) => computer.id === currentlySelectedComputer.id
+    );
+
+    removeComputerFromList(idxOfComputer);
+
+    renderBankSection(bankBalance, loan);
+    renderComputerSelectionSection();
+    renderComputerDisplayInfo(currentlySelectedComputer);
+  } else {
+    alert(`You don't have enough money to purchase this computer!`);
+  }
+};
+
+const removeComputerFromList = (idx) => {
+  computers.splice(idx, 1);
+  currentlySelectedComputer = computers[0];
+};
+
+// Event Listeners
+getLoanBtnEl.addEventListener("click", takeOutLoan);
+workBtnEl.addEventListener("click", increasePay);
+bankBtnEl.addEventListener("click", transferMoneyToBank);
+downpayLoanBtnEl.addEventListener("click", downpayLoan);
+buyNowBtnEl.addEventListener("click", purchaseComputer);
+computerSelectionEl.addEventListener("change", handleComputerSelectionChange);
+
+// Initial render
 renderBankSection(bankBalance, loan);
 renderWorkSection(pay);
