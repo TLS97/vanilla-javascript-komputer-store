@@ -1,6 +1,6 @@
 # Noroff Assignment 1 JS: Komputer Store :computer:
 
-This is a basic frontend application developed using vanilla JavaScript and Bootstrap.
+This is a basic frontend application developed using vanilla JavaScript and Bootstrap. The application has been deployed to Azure App Services and can be found [here](https://noroff-assignment-1.azurewebsites.net/).
 
 ## Description
 
