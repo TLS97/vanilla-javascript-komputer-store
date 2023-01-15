@@ -13,6 +13,13 @@ const buyNowBtnEl = document.getElementById("buy-now-btn");
 const loanDivEl = document.getElementById("loan-div");
 const downpayLoanBtnEl = document.getElementById("downpay-loan-btn");
 const priceTagEl = document.getElementById("price");
+const computerSelectionColEl = document.getElementById(
+  "computer-selection-col"
+);
+const computerSelectionCardEl = document.getElementById(
+  "computer-selection-card"
+);
+const computerDisplayRowEl = document.getElementById("computer-display-row");
 
 // Variables
 let bankBalance = 0;
@@ -67,27 +74,37 @@ const renderWorkSection = (pay) => {
 };
 
 const renderComputerDisplayInfo = (computer) => {
-  computerImageDivEl.innerHTML = "";
-  computerImageDivEl.innerHTML = `<img src="https://hickory-quilled-actress.glitch.me/${computer.image}" style="height: 200px" />`;
+  if (computer) {
+    computerImageDivEl.innerHTML = "";
+    computerImageDivEl.innerHTML = `<img src="https://hickory-quilled-actress.glitch.me/${computer.image}" style="height: 200px" />`;
 
-  computerModelEl.innerText = "";
-  computerModelEl.innerText = computer.title;
+    computerModelEl.innerText = "";
+    computerModelEl.innerText = computer.title;
 
-  computerSpecsString = computer.specs.join("\n");
-  computerDescEl.innerText = "";
-  computerDescEl.innerText = computerSpecsString;
+    computerSpecsString = computer.specs.join("\n");
+    computerDescEl.innerText = "";
+    computerDescEl.innerText = computerSpecsString;
 
-  priceTagEl.innerText = "";
-  priceTagEl.innerText = computer.price + " NOK";
+    priceTagEl.innerText = "";
+    priceTagEl.innerText = computer.price + " NOK";
+  } else {
+    currentlySelectedComputer = null;
+    computerDisplayRowEl.innerHTML = "";
+  }
 };
 
 const renderComputerSelectionSection = () => {
-  computerSelectionEl.innerHTML = "";
-  computers.forEach((c) => addComputerToList(c));
-  computerFeaturesEl.innerHTML = "";
-  let computerFeaturesHtml = `<strong>Features</strong>
+  if (computers.length > 0) {
+    computerSelectionEl.innerHTML = "";
+    computers.forEach((c) => addComputerToList(c));
+    computerFeaturesEl.innerHTML = "";
+    let computerFeaturesHtml = `<strong>Features</strong>
                               <p id="computer-features">${currentlySelectedComputer.description}</p>`;
-  computerFeaturesEl.insertAdjacentHTML("beforeend", computerFeaturesHtml);
+    computerFeaturesEl.insertAdjacentHTML("beforeend", computerFeaturesHtml);
+  } else {
+    computerSelectionColEl.innerHTML = "";
+    renderComputerDisplayInfo(currentlySelectedComputer);
+  }
 };
 
 const takeOutLoan = (e) => {
