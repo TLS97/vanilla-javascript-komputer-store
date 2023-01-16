@@ -22,7 +22,7 @@ const computerSelectionCardEl = document.getElementById(
 const computerDisplayRowEl = document.getElementById("computer-display-row");
 
 // Variables
-let bankBalance = 0;
+let bankBalance = 200000;
 let loan = 0;
 let pay = 0;
 let computers = [];
@@ -90,6 +90,7 @@ const renderComputerDisplayInfo = (computer) => {
   } else {
     currentlySelectedComputer = null;
     computerDisplayRowEl.innerHTML = "";
+    computerDisplayRowEl.innerHTML = `<h3 class="text-center">No more laptops!😥</h3>`;
   }
 };
 
