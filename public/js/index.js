@@ -20,6 +20,7 @@ const computerSelectionCardEl = document.getElementById(
   "computer-selection-card"
 );
 const computerDisplayRowEl = document.getElementById("computer-display-row");
+const laptopStockDiv = document.getElementById("stock-div");
 
 downpayLoanBtnEl.style.visibility = "hidden";
 
@@ -79,38 +80,35 @@ const renderWorkSection = (pay) => {
 };
 
 const renderComputerDisplayInfo = (computer) => {
-  if (computer) {
-    computerImageDivEl.innerHTML = "";
-    computerImageDivEl.innerHTML = `<img src="https://hickory-quilled-actress.glitch.me/${computer.image}" style="height: 200px" />`;
+  computerImageDivEl.innerHTML = "";
+  computerImageDivEl.innerHTML = `<img src="https://hickory-quilled-actress.glitch.me/${computer.image}" style="height: 200px" alt="Laptop Image" />`;
 
-    computerModelEl.innerText = "";
-    computerModelEl.innerText = computer.title;
+  computerModelEl.innerText = "";
+  computerModelEl.innerText = computer.title;
 
-    computerSpecsString = computer.specs.join("\n");
-    computerDescEl.innerText = "";
-    computerDescEl.innerText = computerSpecsString;
+  computerSpecsString = computer.specs.join("\n");
+  computerDescEl.innerText = "";
+  computerDescEl.innerText = computerSpecsString;
 
-    priceTagEl.innerText = "";
-    priceTagEl.innerText = computer.price + " NOK";
+  priceTagEl.innerText = "";
+  priceTagEl.innerText = computer.price + " NOK";
+
+  if (computer.stock > 0) {
+    laptopStockDiv.innerHTML = "";
+    stockHtml = `<p>Stock: ${computer.stock}</p>`;
+    laptopStockDiv.insertAdjacentHTML("beforeend", stockHtml);
   } else {
-    currentlySelectedComputer = null;
-    computerDisplayRowEl.innerHTML = "";
-    computerDisplayRowEl.innerHTML = `<h3 class="text-center">No more laptops!😥</h3>`;
+    laptopStockDiv.innerHTML = "";
+    stockHtml = `<h3>Out of Stock</h3>`;
+    laptopStockDiv.insertAdjacentHTML("beforeend", stockHtml);
   }
 };
 
 const renderComputerSelectionSection = () => {
-  if (computers.length > 0) {
-    computerSelectionEl.innerHTML = "";
-    computers.forEach((c) => addComputerToList(c));
-    computerFeaturesEl.innerHTML = "";
-    let computerFeaturesHtml = `<strong>Features</strong>
+  computerFeaturesEl.innerHTML = "";
+  let computerFeaturesHtml = `<strong>Features</strong>
                               <p id="computer-features">${currentlySelectedComputer.description}</p>`;
-    computerFeaturesEl.insertAdjacentHTML("beforeend", computerFeaturesHtml);
-  } else {
-    computerSelectionColEl.innerHTML = "";
-    renderComputerDisplayInfo(currentlySelectedComputer);
-  }
+  computerFeaturesEl.insertAdjacentHTML("beforeend", computerFeaturesHtml);
 };
 
 const takeOutLoan = (e) => {
@@ -196,29 +194,26 @@ const handleComputerSelectionChange = (e) => {
 };
 
 const purchaseComputer = (e) => {
-  if (bankBalance >= currentlySelectedComputer.price) {
-    alert(
-      `Congratulation!\nYou've purchased the ${currentlySelectedComputer.title}.`
-    );
+  if (currentlySelectedComputer.stock > 0) {
+    if (bankBalance >= currentlySelectedComputer.price) {
+      alert(
+        `Congratulation!\nYou've purchased the ${currentlySelectedComputer.title}.`
+      );
 
-    bankBalance -= currentlySelectedComputer.price;
-    const idxOfComputer = computers.findIndex(
-      (computer) => computer.id === currentlySelectedComputer.id
-    );
+      bankBalance -= currentlySelectedComputer.price;
+      currentlySelectedComputer.stock -= 1;
 
-    removeComputerFromList(idxOfComputer);
-
-    renderBankSection(bankBalance, loan);
-    renderComputerSelectionSection();
-    renderComputerDisplayInfo(currentlySelectedComputer);
+      renderBankSection(bankBalance, loan);
+      renderComputerSelectionSection();
+      renderComputerDisplayInfo(currentlySelectedComputer);
+    } else {
+      alert(`You don't have enough money to purchase this computer!`);
+    }
   } else {
-    alert(`You don't have enough money to purchase this computer!`);
+    alert(
+      `The ${currentlySelectedComputer.title} is out of stock.\nPlease select a different laptop.`
+    );
   }
-};
-
-const removeComputerFromList = (idx) => {
-  computers.splice(idx, 1);
-  currentlySelectedComputer = computers[0];
 };
 
 // Event Listeners
