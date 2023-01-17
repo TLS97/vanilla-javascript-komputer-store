@@ -21,6 +21,8 @@ const computerSelectionCardEl = document.getElementById(
 );
 const computerDisplayRowEl = document.getElementById("computer-display-row");
 
+downpayLoanBtnEl.style.visibility = "hidden";
+
 // Variables
 let bankBalance = 200000;
 let loan = 0;
@@ -71,6 +73,9 @@ const renderBankSection = (bankBalance, loan) => {
 const renderWorkSection = (pay) => {
   payEl.innerText = "";
   payEl.innerText = pay;
+  loan > 0
+    ? (downpayLoanBtnEl.style.visibility = "visible")
+    : (downpayLoanBtnEl.style.visibility = "hidden");
 };
 
 const renderComputerDisplayInfo = (computer) => {
@@ -117,6 +122,7 @@ const takeOutLoan = (e) => {
       loan = desiredLoan;
       bankBalance += loan;
       renderBankSection(bankBalance, loan);
+      renderWorkSection(pay);
     } else {
       alert(
         `You cannot get a loan greater than double you bank balance.\nYou have a bank balance of ${bankBalance}.\nMaximum loan amount is ${maxLoanValue}`
