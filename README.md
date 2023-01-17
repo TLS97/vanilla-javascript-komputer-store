@@ -26,6 +26,8 @@ Start the Node server by using the following command:
 node server.js
 ```
 
+Go to http://localhost:8080 to view the website.
+
 ## Contributors
 
 &copy; Tine Storvoll
